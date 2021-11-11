@@ -1,14 +1,6 @@
 name: Manual Run Data(subset) Pipeline
 
-on:
-  workflow_dispatch:
-    inputs:
-      spreadsheet_ids:
-        description: Spreadsheet Ids (delimited by comma)
-        required: true
-      db_env:
-        description: Database Environment (staging or production)
-        required: true
+on: workflow_dispatch
 
 jobs:
   authorization:
@@ -17,16 +9,7 @@ jobs:
     - name: Authorization check
       uses: octokit/request-action@v2.0.0
       with:
-        route: GET /repos/${{ github.repository }}/collaborators/${{ github.actor }}
+        route: GET /repos/:repository/collaborators/${{ github.actor }}
+        repository: ${{ github.repository }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  collabs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: octokit/request-action@v2.0.0
-        id: get_collabs
-        with:
-          route: GET /repos/${{ github.repository }}/collaborators
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo collabs: ${{ steps.get_collabs.outputs.data }}"
