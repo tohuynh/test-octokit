@@ -20,7 +20,7 @@ jobs:
         route: GET /repos/${{ github.repository }}/collaborators/${{ github.actor }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- collabs:
+  collabs:
     runs-on: ubuntu-latest
     steps:
       - uses: octokit/request-action@v2.0.0
